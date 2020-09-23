@@ -1,0 +1,584 @@
+% This LaTeX was auto-generated from MATLAB code.
+% To make changes, update the MATLAB code and export to LaTeX again.
+
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{epstopdf}
+\usepackage[table]{xcolor}
+\usepackage{matlab}
+\usepackage{geometry}
+
+\sloppy
+\epstopdfsetup{outdir=./}
+\graphicspath{ {./main_images/} }
+
+\geometry{left=1.0in,right=1.0in,top=1.0in,bottom=1.0in}
+
+\begin{document}
+
+\matlabtitle{ENV}
+
+\begin{matlabcode}
+clear all; clc;
+addpath('/Applications/Dynare/4.6.2/matlab'); % add dynare path
+\end{matlabcode}
+
+
+\matlabheading{Baseline}
+
+\begin{matlabcode}
+dynare Q410.mod; % to get model instance
+\end{matlabcode}
+\begin{matlaboutput}
+Using 64-bit preprocessor
+Starting Dynare (version 4.6.2).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ...
+Found 11 equation(s).
+Evaluating expressions...done
+Computing static model derivatives (order 1).
+Computing dynamic model derivatives (order 1).
+Processing outputs ...
+done
+Preprocessing completed.
+
+Total computing time : 0h00m01s
+\end{matlaboutput}
+\begin{matlabcode}
+
+print_table() % exactly replicate table 4.2 using textbook calibration
+\end{matlabcode}
+\begin{matlaboutput}
+Results of table 4.2:
+
+Variable  sig_x       rho1       rho2
+   y       3.08       0.62       1.00
+   c       2.71       0.78       0.84
+   i       9.04       0.07       0.67
+   h       2.12       0.62       1.00
+tb_y       1.78       0.51      -0.04
+ca_y       1.45       0.32       0.05
+\end{matlaboutput}
+
+
+\matlabheading{Q1.1 Calibrate model for Canada 1960-2011}
+
+\begin{matlabcode}
+%{
+NOTE:
+    1. moments to match: [std(y),autocor(y),std(i),std(tb/y)]
+    2. target moment values: [3.71%, 0.86, 10.31%, 1.72%]
+    3. pars to calibrate: rho, eta, phi, psi_1
+    4. method: min distance
+    5. solver: fminunc/BFGS Quasi-Newton
+    6. init guess: param = [0.42 0.0129 0.028 0.000742]
+%}
+
+param_init = [0.42 0.0129 0.028 0.000742];
+param_est  = fminunc(@(x)m_dist(x), param_init);
+\end{matlabcode}
+\begin{matlaboutput}
+current distance = 1.439177.
+current distance = 1.439177.
+current distance = 1.439166.
+current distance = 1.439179.
+current distance = 1.439178.
+current distance = 479.802914.
+current distance = 479.802922.
+current distance = 479.802921.
+current distance = 479.802911.
+current distance = 479.802905.
+current distance = 479.802905.
+current distance = 479.802905.
+current distance = 479.802905.
+current distance = 479.802905.
+current distance = 479.802905.
+current distance = 479.802905.
+current distance = 479.802905.
+current distance = 479.802905.
+current distance = 479.802905.
+current distance = 479.802905.
+current distance = 0.488237.
+current distance = 0.488237.
+current distance = 0.488237.
+current distance = 0.488236.
+current distance = 0.488230.
+current distance = 0.361533.
+current distance = 0.361533.
+current distance = 0.361536.
+current distance = 0.361531.
+current distance = 0.361531.
+current distance = 0.443904.
+current distance = 0.443904.
+current distance = 0.443896.
+current distance = 0.443906.
+current distance = 0.443905.
+current distance = 0.324994.
+current distance = 0.324994.
+current distance = 0.324993.
+current distance = 0.324993.
+current distance = 0.324992.
+current distance = 0.301981.
+current distance = 0.301981.
+current distance = 0.301980.
+current distance = 0.301981.
+current distance = 0.301980.
+current distance = 0.250889.
+current distance = 0.250889.
+current distance = 0.250890.
+current distance = 0.250888.
+current distance = 0.250888.
+current distance = 0.235159.
+current distance = 0.235159.
+current distance = 0.235159.
+current distance = 0.235158.
+current distance = 0.235158.
+current distance = 0.233371.
+current distance = 0.233371.
+current distance = 0.233371.
+current distance = 0.233371.
+current distance = 0.233371.
+current distance = 0.233325.
+current distance = 0.233325.
+current distance = 0.233325.
+current distance = 0.233325.
+current distance = 0.233325.
+current distance = 0.233321.
+current distance = 0.233321.
+current distance = 0.233321.
+current distance = 0.233321.
+current distance = 0.233321.
+current distance = 0.233300.
+current distance = 0.233300.
+current distance = 0.233300.
+current distance = 0.233300.
+current distance = 0.233300.
+current distance = 0.233250.
+current distance = 0.233250.
+current distance = 0.233250.
+current distance = 0.233250.
+current distance = 0.233250.
+current distance = 0.233130.
+current distance = 0.233130.
+current distance = 0.233131.
+current distance = 0.233130.
+current distance = 0.233130.
+current distance = 0.232895.
+current distance = 0.232895.
+current distance = 0.232895.
+current distance = 0.232895.
+current distance = 0.232895.
+current distance = 0.232602.
+current distance = 0.232602.
+current distance = 0.232602.
+current distance = 0.232602.
+current distance = 0.232602.
+current distance = 0.232461.
+current distance = 0.232461.
+current distance = 0.232462.
+current distance = 0.232461.
+current distance = 0.232461.
+current distance = 0.232417.
+current distance = 0.232417.
+current distance = 0.232417.
+current distance = 0.232417.
+current distance = 0.232417.
+current distance = 0.232409.
+current distance = 0.232409.
+current distance = 0.232409.
+current distance = 0.232409.
+current distance = 0.232409.
+current distance = 0.232398.
+current distance = 0.232398.
+current distance = 0.232398.
+current distance = 0.232398.
+current distance = 0.232398.
+current distance = 0.232360.
+current distance = 0.232360.
+current distance = 0.232360.
+current distance = 0.232360.
+current distance = 0.232360.
+current distance = 0.232269.
+current distance = 0.232269.
+current distance = 0.232269.
+current distance = 0.232269.
+current distance = 0.232269.
+current distance = 0.232021.
+current distance = 0.232021.
+current distance = 0.232021.
+current distance = 0.232021.
+current distance = 0.232021.
+current distance = 0.231383.
+current distance = 0.231383.
+current distance = 0.231383.
+current distance = 0.231383.
+current distance = 0.231383.
+current distance = 0.229715.
+current distance = 0.229715.
+current distance = 0.229714.
+current distance = 0.229715.
+current distance = 0.229715.
+current distance = 0.225439.
+current distance = 0.225439.
+current distance = 0.225438.
+current distance = 0.225439.
+current distance = 0.225439.
+current distance = 0.214896.
+current distance = 0.214896.
+current distance = 0.214894.
+current distance = 0.214897.
+current distance = 0.214896.
+current distance = 0.189515.
+current distance = 0.189515.
+current distance = 0.189510.
+current distance = 0.189515.
+current distance = 0.189515.
+current distance = 0.112873.
+current distance = 0.112873.
+current distance = 0.112868.
+current distance = 0.112873.
+current distance = 0.112873.
+current distance = 0.138529.
+current distance = 0.138529.
+current distance = 0.138537.
+current distance = 0.138528.
+current distance = 0.138528.
+current distance = 0.099436.
+current distance = 0.099436.
+current distance = 0.099437.
+current distance = 0.099436.
+current distance = 0.099436.
+current distance = 0.186645.
+current distance = 0.186644.
+current distance = 0.186643.
+current distance = 0.186645.
+current distance = 0.186645.
+current distance = 0.087724.
+current distance = 0.087724.
+current distance = 0.087721.
+current distance = 0.087725.
+current distance = 0.087724.
+current distance = 0.077286.
+current distance = 0.077286.
+current distance = 0.077288.
+current distance = 0.077286.
+current distance = 0.077286.
+current distance = 0.073619.
+current distance = 0.073619.
+current distance = 0.073619.
+current distance = 0.073619.
+current distance = 0.073619.
+current distance = 0.072210.
+current distance = 0.072210.
+current distance = 0.072209.
+current distance = 0.072210.
+current distance = 0.072210.
+current distance = 0.065479.
+current distance = 0.065479.
+current distance = 0.065474.
+current distance = 0.065480.
+current distance = 0.065480.
+current distance = 0.060782.
+current distance = 0.060782.
+current distance = 0.060780.
+current distance = 0.060782.
+current distance = 0.060782.
+current distance = 0.052210.
+current distance = 0.052210.
+current distance = 0.052209.
+current distance = 0.052210.
+current distance = 0.052210.
+current distance = 0.074930.
+current distance = 0.074930.
+current distance = 0.074917.
+current distance = 0.074932.
+current distance = 0.074931.
+current distance = 0.046383.
+current distance = 0.046383.
+current distance = 0.046379.
+current distance = 0.046384.
+current distance = 0.046384.
+current distance = 0.036506.
+current distance = 0.036506.
+current distance = 0.036502.
+current distance = 0.036506.
+current distance = 0.036506.
+current distance = 0.039325.
+current distance = 0.039325.
+current distance = 0.039334.
+current distance = 0.039324.
+current distance = 0.039324.
+current distance = 0.033321.
+current distance = 0.033321.
+current distance = 0.033323.
+current distance = 0.033320.
+current distance = 0.033320.
+current distance = 0.030917.
+current distance = 0.030917.
+current distance = 0.030908.
+current distance = 0.030918.
+current distance = 0.030918.
+current distance = 0.027459.
+current distance = 0.027459.
+current distance = 0.027456.
+current distance = 0.027460.
+current distance = 0.027460.
+current distance = 0.024982.
+current distance = 0.024982.
+current distance = 0.024980.
+current distance = 0.024982.
+current distance = 0.024982.
+current distance = 0.028042.
+current distance = 0.028042.
+current distance = 0.028047.
+current distance = 0.028041.
+current distance = 0.028041.
+current distance = 0.024589.
+current distance = 0.024589.
+current distance = 0.024589.
+current distance = 0.024588.
+current distance = 0.024588.
+current distance = 0.025765.
+current distance = 0.025765.
+current distance = 0.025771.
+current distance = 0.025765.
+current distance = 0.025765.
+current distance = 0.024324.
+current distance = 0.024324.
+current distance = 0.024325.
+current distance = 0.024323.
+current distance = 0.024323.
+current distance = 0.024200.
+current distance = 0.024200.
+current distance = 0.024200.
+current distance = 0.024200.
+current distance = 0.024200.
+current distance = 0.023964.
+current distance = 0.023964.
+current distance = 0.023965.
+current distance = 0.023964.
+current distance = 0.023964.
+current distance = 0.023741.
+current distance = 0.023741.
+current distance = 0.023743.
+current distance = 0.023741.
+current distance = 0.023741.
+current distance = 0.023047.
+current distance = 0.023047.
+current distance = 0.023048.
+current distance = 0.023047.
+current distance = 0.023047.
+current distance = 0.022642.
+current distance = 0.022642.
+current distance = 0.022644.
+current distance = 0.022642.
+current distance = 0.022642.
+current distance = 0.022031.
+current distance = 0.022031.
+current distance = 0.022032.
+current distance = 0.022030.
+current distance = 0.022030.
+current distance = 0.021548.
+current distance = 0.021548.
+current distance = 0.021549.
+current distance = 0.021547.
+current distance = 0.021548.
+current distance = 0.021648.
+current distance = 0.021648.
+current distance = 0.021645.
+current distance = 0.021648.
+current distance = 0.021648.
+current distance = 0.021350.
+current distance = 0.021350.
+current distance = 0.021349.
+current distance = 0.021350.
+current distance = 0.021350.
+current distance = 0.021154.
+current distance = 0.021154.
+current distance = 0.021155.
+current distance = 0.021154.
+current distance = 0.021154.
+current distance = 0.021039.
+current distance = 0.021039.
+current distance = 0.021039.
+current distance = 0.021039.
+current distance = 0.021039.
+current distance = 0.020944.
+current distance = 0.020944.
+current distance = 0.020945.
+current distance = 0.020944.
+current distance = 0.020944.
+current distance = 0.020862.
+current distance = 0.020862.
+current distance = 0.020863.
+current distance = 0.020862.
+current distance = 0.020862.
+current distance = 0.020833.
+current distance = 0.020833.
+current distance = 0.020834.
+current distance = 0.020833.
+current distance = 0.020833.
+current distance = 0.020822.
+current distance = 0.020822.
+current distance = 0.020822.
+current distance = 0.020823.
+current distance = 0.020823.
+current distance = 0.020830.
+current distance = 0.020830.
+current distance = 0.020831.
+current distance = 0.020830.
+current distance = 0.020830.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+current distance = 0.020811.
+
+Solver stopped prematurely.
+
+fminunc stopped because it exceeded the function evaluation limit,
+options.MaxFunctionEvaluations = 4.000000e+02.
+\end{matlaboutput}
+\begin{matlabcode}
+
+fprintf('Estimation results:\n');
+\end{matlabcode}
+\begin{matlaboutput}
+Estimation results:
+\end{matlaboutput}
+\begin{matlabcode}
+fprintf('\n');
+fprintf('rho   = %.6f\n', param_est(1));
+\end{matlabcode}
+\begin{matlaboutput}
+rho   = 0.621901
+\end{matlaboutput}
+\begin{matlabcode}
+fprintf('eta   = %.6f\n', param_est(2));
+\end{matlabcode}
+\begin{matlaboutput}
+eta   = 0.010536
+\end{matlaboutput}
+\begin{matlabcode}
+fprintf('phi   = %.6f\n', param_est(3));
+\end{matlabcode}
+\begin{matlaboutput}
+phi   = 0.018179
+\end{matlaboutput}
+\begin{matlabcode}
+fprintf('psi_1 = %.6f\n', param_est(4));
+\end{matlabcode}
+\begin{matlaboutput}
+psi_1 = 0.026189
+\end{matlaboutput}
+\begin{matlabcode}
+
+% %% Q1.2 Compute theoretical second moments
+
+set_param_value('rho',  param_est(1)); 
+set_param_value('eta',  param_est(2));
+set_param_value('phi',  param_est(3)); 
+set_param_value('psi_1',param_est(4));
+
+[info,oo_,options_,M_] = stoch_simul(M_,options_,oo_,var_list_);
+
+print_table()
+\end{matlabcode}
+\begin{matlaboutput}
+Results of table 4.2:
+
+Variable  sig_x       rho1       rho2
+   y       3.71       0.84       1.00
+   c       3.18       0.89       0.98
+   i      10.31       0.16       0.64
+   h       2.55       0.84       1.00
+tb_y       1.73       0.04      -0.12
+ca_y       1.66       0.04      -0.07
+\end{matlaboutput}
+\begin{matlabcode}
+
+% %% Q1.4 compute std(ln A)
+
+sd_list  = sqrt(diag(oo_.var));
+sd_A     = sd_list(strcmp('A',M_.endo_names))*100;
+sd_y     = sd_list(strcmp('y',M_.endo_names))*100;
+sd_A_old = 100*sqrt(0.0129^2/(1-0.42^2));
+
+fprintf('Unconditional SD(ln(A)) = %.4f\n', sd_A);
+\end{matlabcode}
+\begin{matlaboutput}
+Unconditional SD(ln(A)) = 1.3455
+\end{matlaboutput}
+\begin{matlabcode}
+fprintf('Old value:                %.4f\n', sd_A_old);
+\end{matlabcode}
+\begin{matlaboutput}
+Old value:                1.4214
+\end{matlaboutput}
+\begin{matlabcode}
+fprintf('Unconditional SD(y)     = %.4f\n', sd_y);
+\end{matlabcode}
+\begin{matlaboutput}
+Unconditional SD(y)     = 3.7130
+\end{matlaboutput}
+\begin{matlabcode}
+fprintf('Old value:                %.4f\n', 3.08);
+\end{matlabcode}
+\begin{matlaboutput}
+Old value:                3.0800
+\end{matlaboutput}
+
+\end{document}
