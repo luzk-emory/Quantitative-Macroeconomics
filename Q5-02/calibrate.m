@@ -9,6 +9,7 @@ param.delta      = 0.05;
 param.g_bar      = 1.0066;
 param.phi        = 1.37;
 param.miu        = 0.44;
+param.sigma      = 2;
 % share paremeter of tradable goods; to be calibrated endogenously
 param.yeta       = 0.5; 
 
@@ -17,8 +18,12 @@ param.yeta       = 0.5;
 x0    = [0,0,0.1,1,1,1,1,1,1,1,1,1,1,1,1,1];
 x_ss0 = fsolve(@(x)ss_model(x,param), x0);
 
+
+
 % find the eta
 eeta = fsolve(@(x)calibrate_eta(x,param,x_ss0), param.yeta);
+
+
 
 % update the parameters and the steady state vals
 [~, param, x_ss] = calibrate_eta(eeta, param, x_ss0)

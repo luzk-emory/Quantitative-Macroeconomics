@@ -1,12 +1,13 @@
+% one sector model 
+% replicates the model in section 5.2
+
 var 
 // core vars
-c d r 
-y_T k_T i_T h_T 
-lambda
+c d r y_T k_T i_T h_T lambda
 // shocks
 z g 
 // auxiliary vars
-tb delta_y tby
+tb delta_c delta_y tby
 ;
 
 varexo ez eg;
@@ -20,7 +21,6 @@ alpha_T = 0.68; % 1-alpha
 sigma   = 2;
 delta   = 0.05;
 d_bar   = 0.10;
-
 phi     = 1.37;
 g_bar   = 1.0066;
 
@@ -31,7 +31,6 @@ sigmag  = 0.0213;
 sigmaz  = 0.0053;
 phog    = 0.00;
 phoz    = 0.95;
-
 
 model;
 
@@ -59,24 +58,20 @@ log(g/g_bar) = phog*log(g(-1)/g_bar) + sigmag*eg;
 
 // define auxiliary vars here: 
 
-exp(tb) = exp(y_T) - exp(c) - exp(i_T);
-tby = exp(tb)/exp(y_T);
+tb  = exp(y_T) - exp(c) - exp(i_T);
+tby = tb/exp(y_T);
 
-// delta_c = c-c(-1)+log(g(-1));
+delta_c = c  -  c(-1)+log(g(-1));
 delta_y = y_T-y_T(-1)+log(g(-1));
 
 end;
 
-%------------------------------------------------------------------------------------------%
-%                          STEADY STATE INITIAL VALUES                                     % 
-%------------------------------------------------------------------------------------------%
 
 initval;
 
 c        =  -0.469107;
 d        =  0.0993443;
 r        =  1.02958;
-// a_T      =  -0.210054;
 y_T      =  -0.207323;
 k_T      =  1.18424;
 i_T      =  -1.68751;
@@ -85,7 +80,7 @@ lambda   =  0.967961;
 z        =  1;
 g        =  1.0066;
 tb       =  -6.11039;
-// delta_c  =  0.00657832;
+delta_c  =  0.00657832;
 delta_y  =  0;
 tby      =  0.00273106;
 
@@ -101,4 +96,4 @@ var ez; stderr 1;
 var eg; stderr 1;  
 end;
 
-stoch_simul(irf=0, nodecomposition, order=1, periods=2000);
+stoch_simul(irf=0, nodecomposition, order=1, periods=10000);
