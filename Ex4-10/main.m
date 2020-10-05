@@ -3,7 +3,7 @@ clear all; clc;
 addpath('/Applications/Dynare/4.6.2/matlab'); % add dynare path
 
 %% Baseline
-dynare Q410.mod; % to get model instance
+dynare Ex410.mod; % to get model instance
 
 print_table() % exactly replicate table 4.2 using textbook calibration
 

@@ -1,5 +1,8 @@
 % results for Q5.2-6 are reported in Dynare
 
+% run dynare first
+% dynare Q502
+
 % simulate/compute moments in table 5.2 for Q5.2-7
 options_.periods = 10000;
 
