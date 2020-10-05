@@ -24,15 +24,20 @@
 
 \begin{document}
 
-\matlabtitle{Homework 1 Report}
+\title{Homework 1 Report}
+\author{Zhikun Lu\footnote{Economics Department, Emory University. I collaborate with Tianhao Zhao and Xiang Cheng in this project. They generously shared their code with me and provided insightful discussions.}}
+\date{\today}
+\maketitle
+
+% \matlabtitle{Homework 1 Report}
+
+We use Dynare 4.6.2 for this homework. Dynare 4.6 has changed the usage of some functions, for example, \textit{stoch\_simul}, and thus the code may not work for a lower version.
 
 \begin{matlabcode}
 addpath('/Applications/Dynare/4.6.2/matlab'); % add dynare path
 \end{matlabcode}
-We use Dynare 4.6.2 for this homework. Dynare 4.6 has changed the usage of some functions, for example, \textit{stoch\_simul}, and thus the code may not work for a lower version.
 
 \section*{Exercise 4.10} 
-
 
 Before starting Q1, we first replicate the right panel of table 4.2 in the textbook to ensure our model, variable definitions, and solution method are consistent with the textbook.
 
@@ -159,7 +164,323 @@ From the results above we can see that
 This means the business cycle relies less on the TFP shock. However, its internal amplification and propagation mechanisms have become stronger than in the past. The latter effect outweighs the previous effect, and as a result, the overall output volatility still increases.
 
 
-\newpage
+\clearpage
+
+\section{Exercise 5.2} 
+
+\subsection*{Q1. Equilibrium Conditions}
+
+There are 21 variables: $C_{t}, h_{t}, A_{t}, I_{t}, Z_{t}, X_{t}, D_{t}, R_{t}, g_{t}, \widetilde{D}_{t}, A_{t}^{T}, A_{t}^{N}, Y_{t}^{T}, Y_{t}^{N}, K_{t}^{T}, K_{t}^{N}, h_{t}^{T}, h_{t}^{N}, I_{t}^{T}, I_{t}^{N}, \lambda_{t}$.
+
+Accordingly, there are 21 equations for the equilibrium:
+\begin{align}
+A_{t}&=C_{t}+I_{t} \\
+A_{t}&=\left[\eta\left(A_{t}^{T}\right)^{1- \frac{1}{\mu}}+(1-\eta)\left(A_{t}^{N}\right)^{1- \frac{1}{\mu}}\right]^{1 /(1- \frac{1}{\mu})} \\
+Y_{t}^{T}&=Z_{t}\left(K_{t}^{T}\right)^{1-\alpha_{T}}\left(X_{t} h_{t}^{T}\right)^{\alpha_{T}} \\
+Y_{t}^{N}&=Z_{t}\left(K_{t}^{N}\right)^{1-\alpha_{N}}\left(X_{t} h_{t}^{N}\right)^{\alpha_{N}} \\
+K_{t+1}^{T}&=(1-\delta) K_{t}^{T}+I_{t}^{T}-\frac{\phi}{2}\left(\frac{K_{t+1}^{T}}{K_{t}^{T}}-g\right)^{2} K_{t}^{T} \\
+K_{t+1}^{N}&=(1-\delta) K_{t}^{N}+I_{t}^{N}-\frac{\phi}{2}\left(\frac{K_{t+1}^{N}}{K_{t}^{N}}-g\right)^{2} K_{t}^{N} \\
+I_{t}&=I_{t}^{T}+I_{t}^{N} \\
+Y_{t}^{N}&=A_{t}^{N} \\
+h_{t}&=h_{t}^{T}+h_{t}^{N} \\
+\frac{D_{t+1}}{R_{t}}&=D_{t}+A_{t}^{T}-Y_{t}^{T}\\
+R_{t}&=R^{*}+\psi\left[e^{\widetilde{D}_{t+1} / X_{t}-\bar{d}}-1\right] \\
+\widetilde{D}_{t}&=D_{t} \\
+\ln Z_{t}&=\rho_{Z} \ln Z_{t-1}+\sigma_{Z} \varepsilon_{t}^{Z} \\
+\ln \left(\frac{g_{t}}{g}\right)&=\rho_{g} \ln \left(\frac{g_{t-1}}{g}\right)+\sigma_{g} \varepsilon_{t}^{g} \\
+g_{t}&=\frac{X_{t}}{X_{t-1}} \\
+\lambda_{t}&=\beta^{t}\left[C_{t}^{\gamma}\left(1-h_{t}\right)^{1-\gamma}\right]^{-\sigma} \left(1-h_{t}\right)^{1-\gamma}  \gamma  C_{t}^{\gamma-1} \\
+\beta^{t}\left[C_{t}^{\gamma}\left(1-h_{t}\right)^{1-\gamma}\right]^{-\sigma} \left(1-h_{t}\right)^{-\gamma} (1-\gamma)  C_{t}^{\gamma}&=\lambda_{t} A_t^{\frac{1}{\mu}} \eta\left(A_{t}^{T}\right)^{- \frac{1}{\mu}} \alpha_{T} Z_{t} X_{t}\left(\frac{K_{t}^{T}}{X_{t} h_{t}^{T}}\right)^{1-\alpha_{T}} \\
+\beta^{t}\left[C_{t}^{\gamma}\left(1-h_{t}\right)^{1-\gamma}\right]^{-\sigma} \left(1-h_{t}\right)^{-\gamma} (1-\gamma)  C_{t}^{\gamma}&=\lambda_{t} A_t^{\frac{1}{\mu}}(1-\eta)\left(A_{t}^{N}\right)^{- \frac{1}{\mu}} \alpha_{N} Z_{t} X_{t}\left(\frac{K_{t}^{N}}{X_{t} h_{t}^{N}}\right)^{1-\alpha_{N}}\\
+\lambda_{t} A_t^{\frac{1}{\mu}} \eta\left(A_{t}^{T}\right)^{-1 / \mu} \frac{1}{R_{t}}&=E_{t} \lambda_{t+1}A_{t+1}^{\frac{1}{\mu}} \eta\left(A_{t+1}^{T}\right)^{-1 / \mu} 
+\end{align}
+\begin{align}
+\lambda_{t}\left(1+\phi\left(\frac{K_{t+1}^{T}}{K_{t}^{T}}-g\right)\right)&=E_{t} \lambda_{t+1}\left\{ A_{t+1}^{\frac{1}{\mu}} \eta\left(A_{t+1}^{T}\right)^{-\frac{1}{\mu}}\left(1-\alpha_{T}\right) \frac{Y_{t+1}^{T}}{K_{t+1}^{T}}+1-\delta+\phi\left(\frac{K_{t+2}^{T}}{K_{t+1}^{T}}-g\right) \frac{K_{t+2}^{T}}{K_{t+1}^{T}}-\frac{\phi}{2}\left(\frac{K_{t+2}^{T}}{K_{t+1}^{T}}-g\right)^{2}\right\} \\
+\lambda_{t}\left(1+\phi\left(\frac{K_{t+1}^{N}}{K_{t}^{N}}-g\right)\right)&=E_{t} \lambda_{t+1}\left\{A_{t+1}^{\frac{1}{\mu}}(1-\eta)\left(A_{t+1}^{N}\right)^{-\frac{1}{\mu}}\left(1-\alpha_{N}\right) \frac{Y_{t+1}^{N}}{K_{t+1}^{N}}+1-\delta+\phi\left(\frac{K_{t+2}^{N}}{K_{t+1}^{N}}-g\right) \frac{K_{t+2}^{N}}{K_{t+1}^{N}}-\frac{\phi}{2}\left(\frac{K_{t+2}^{N}}{K_{t+1}^{N}}-g\right)^{2}\right\}
+\end{align}
+
+\subsection*{Q2. Prices}
+From the FOCs, it is easy to derive
+\begin{align*}
+p_{t}^{N}&=\frac{1-\eta}{\eta}\left(\frac{A_{t}^{N}}{A_{t}^{T}}\right)^{-\frac{1}{\mu}},\\
+p_{t}&=\left[\eta\left(A_{t}^{T}\right)^{1-\frac{1}{\mu}}+(1-\eta)\left(A_{t}^{N}\right)^{1-\frac{1}{\mu}}\right]^{\frac{1}{1-\mu}} \eta^{-1}\left(A_{t}^{T}\right)^{1 / \mu}.
+\end{align*}
+Both of them are stationary variables. This is because their values only depend on the ratio, $\frac{A_{t}^{N}}{A_{t}^{T}}$, which is a constant along the BGP.
+
+\subsection*{Q3. Stationary Form of the Equilibrium Conditions}
+
+Define stationary variables as follows:
+\begin{align*}
+&
+\hat{c}_{t} \equiv \frac{C_{t}}{X_{t-1}}, 
+\hat{a}_{t} \equiv \frac{A_{t}}{X_{t-1}}, 
+\hat{\imath}_{t} \equiv \frac{I_{t}}{X_{t-1}}, 
+\hat{d}_{t} \equiv \frac{D_{t}}{X_{t-1}}, 
+\hat{r}_{t} \equiv \frac{R_{t}}{X_{t-1}}, 
+\hat{a}_{t}^{T} \equiv \frac{A_{t}^{T}}{X_{t-1}}, 
+\hat{a}_{t}^{N} \equiv \frac{A_{t}^{N}}{X_{t-1}}, 
+\widehat{y}_{t}^{T} \equiv \frac{Y_{t}^{T}}{X_{t-1}},\\
+&\hat{y}_{t}^{N} \equiv \frac{Y_{t}^{N}}{X_{t-1}}, 
+\hat{k}_{t}^{T} \equiv \frac{K_{t}^{T}}{X_{t-1}}, 
+\hat{k}_{t}^{N} \equiv \frac{K_{t}^{N}}{X_{t-1}}, 
+\hat{\imath}_{t}^{T} \equiv \frac{I_{t}^{T}}{X_{t-1}}, 
+\hat{l}_{t}^{N} \equiv \frac{I_{t}^{N}}{X_{t-1}}, 
+\hat{\lambda}_{t} \equiv X_{t-1}^{1+(\sigma-1)\gamma}\lambda_{t}.
+\end{align*}
+Then, the stationary form equilibrium conditions can be written as follows:
+\begin{align}
+\hat{a}_{t}&=\hat{c}_{t}+\hat{\imath}_{t} \\
+\hat{a}_{t}&=\left[\eta\left(\hat{a}_{t}^{T}\right)^{1-1 / \mu}+(1-\eta)\left(\hat{a}_{t}^{N}\right)^{1-1 / \mu}\right]^{1 /(1-1 / \mu)} \\
+\hat{y}_{t}^{T}&=Z_{t}\left(\hat{k}_{t}^{T}\right)^{1-\alpha_{T}}\left(g_{t} h_{t}^{T}\right)^{\alpha_{T}} \\
+\hat{y}_{t}^{N}&=Z_{t}\left(\hat{k}_{t}^{N}\right)^{1-\alpha_{N}}\left(g_{t} h_{t}^{N}\right)^{\alpha_{N}} \\
+\hat{k}_{t+1}^{T}&=\frac{(1-\delta) \hat{k}_{t}^{T}+\hat{\imath}_{t}^{T}-\frac{\phi}{2}\left(\frac{\hat{k}_{t+1}^{T}}{\hat{k}_{t}^{T}} g_{t}-g\right)^{2} \hat{k}_{t}^{T}}{g_{t}} \\
+\hat{k}_{t+1}^{N}&=\frac{(1-\delta) \hat{k}_{t}^{N}+\hat{\imath}_{t}^{N}-\frac{\phi}{2}\left(\frac{\hat{k}_{t+1}^{N}}{\hat{k}_{t}^{N}} g_{t}-g\right)^{2} \hat{k}_{t}^{N}}{g_{t}} \\
+\hat{\imath}_{t}&=\hat{\imath}_{t}^{T}+\hat{\imath}_{t}^{N} \\
+\hat{y}_{t}^{N}&=\hat{a}_{t}^{N} \\
+h_{t}&=h_{t}^{T}+h_{t}^{N} \\
+\frac{\hat{d}_{t+1} g_{t}}{R_{t}}&=\hat{d}_{t}+\hat{a}_{t}^{T}-\hat{y}_{t}^{T}\\
+R_{t}&=R^{*}+\psi\left[e^{\hat{d}_{t+1}-\bar{d}}-1\right] \\
+\ln Z_{t}&=\rho_{Z} \ln Z_{t-1}+\sigma_{Z} \varepsilon_{t}^{Z} \\
+\ln \left(g_{t} / g\right)&=\rho_{g} \ln \left(g_{t-1} / g\right)+\sigma_{g} \varepsilon_{t}^{g} \\
+g_{t}&=\frac{X_{t}}{X_{t-1}}
+\end{align}
+\begin{align}
+(1-\gamma) \hat{c}_{t}&=\gamma\left(1-h_{t}\right)\hat{a}_{t}^{1/\mu} \eta\left(\hat{a}_{t}^{T}\right)^{-1 / \mu} \alpha_{T} Z_{t} g_{t}\left(\frac{\hat{k}_{t}^{T}}{g_{t} n_{t}^{T}}\right)^{1-\alpha_{T}} \\
+(1-\gamma) \hat{c}_{t}&=\gamma\left(1-h_{t}\right)\hat{a}_{t}^{1/\mu}(1-\eta)\left(\hat{a}_{t}^{N}\right)^{-1 / \mu} \alpha_{N} Z_{t} g_{t}\left(\frac{\hat{k}_{t}^{N}}{g_{t} h_{t}^{N}}\right)^{1-\alpha_{N}}
+\end{align}
+\begin{align}
+\left(1-h_{t}\right)^{(1-\gamma)(1-\sigma)}  \gamma  \hat{c}_{t}^{\gamma-1-\sigma\gamma} \hat{a}_{t}^{1/\mu} \eta\left(\hat{a}_{t}^{T}\right)^{-1 / \mu} = E_{t} \beta R_{t} g_{t}^{-\sigma \gamma}\left(1-h_{t+1}\right)^{(1-\gamma)(1-\sigma)}  \gamma  \hat{c}_{t+1}^{\gamma-1-\sigma\gamma} g_{t}^{\gamma-1} \hat{a}_{t+1}^{1/\mu} \eta\left(\hat{a}_{t+1}^{T}\right)^{-1 / \mu}
+\end{align}
+\begin{align}
+\begin{aligned}
+&\left[\hat{c}_{t}^{\gamma}\left(1-h_{t}\right)^{1-\gamma}\right]^{-\sigma} \left(1-h_{t}\right)^{1-\gamma} \gamma \hat{c}_{t}^{\gamma-1}\left(1+\phi\left(\frac{\hat{k}_{t+1}^{T}}{\hat{k}_{t}^{T}} g_{t}-g\right)\right)=E_{t} \beta\left[\hat{c}_{t+1}^{\gamma} g_{t}^{\gamma}\left(1-h_{t+1}\right)^{1-\gamma}\right]^{-\sigma} \left(1-h_{t+1}\right)^{1-\gamma} \gamma \hat{c}_{t+1}^{\gamma-1} g_{t}^{\gamma-1}\\
+&\quad \quad \left\{\eta\left(\frac{\hat{a}_{t+1}}{\hat{a}_{t+1}^{T}}\right)^{\frac{1}{\mu}}\left(1-\alpha_{T}\right) \frac{\hat{a}_{t+1}^{T}}{\hat{k}_{t+1}^{T}}+1-\delta+\phi\left(\frac{\hat{k}_{t+2}^{T}}{\hat{k}_{t+1}^{T}} g_{t+1}-g\right) \frac{\hat{k}_{t+2}^{T}}{\hat{k}_{t+1}^{T}} g_{t+1}-\frac{\phi}{2}\left(\frac{\hat{k}_{t+2}^{T}}{\hat{k}_{t+1}^{T}} g_{t+1}-g\right)^{2}\right\}
+\end{aligned}
+\end{align}
+\begin{align}
+\begin{aligned}
+&\left[\hat{c}_{t}^{\gamma}\left(1-h_{t}\right)^{1-\gamma}\right]^{-\sigma} \left(1-h_{t}\right)^{1-\gamma} \gamma \hat{c}_{t}^{\gamma-1}\left(1+\phi\left(\frac{\hat{k}_{t+1}^{N}}{\hat{k}_{t}^{N}} g_{t}-g\right)\right)=E_{t} \beta\left[\hat{c}_{t+1}^{\gamma} g_{t}^{\gamma}\left(1-h_{t+1}\right)^{1-\gamma}\right]^{-\sigma} \left(1-h_{t+1}\right)^{1-\gamma} \gamma \hat{c}_{t+1}^{\gamma-1} g_{t}^{\gamma-1}\\
+&\quad \quad \left\{(1-\eta)\left(\frac{\hat{a}_{t+1}}{\hat{a}_{t+1}^{N}}\right)^{\frac{1}{\mu}}\left(1-\alpha_{N}\right) \frac{\hat{a}_{t+1}^{N}}{\hat{k}_{t+1}^{N}}+1-\delta+\phi\left(\frac{\hat{k}_{t+2}^{T}}{\hat{k}_{t+1}^{N}} g_{t+1}-g\right) \frac{\hat{k}_{t+2}^{T}}{\hat{k}_{t+1}^{N}} g_{t+1}-\frac{\phi}{2}\left(\frac{\hat{k}_{t+2}^{N}}{\hat{k}_{t+1}^{N}} g_{t+1}-g\right)^{2}\right\}
+\end{aligned}
+\end{align}
+
+\subsection*{Q4. Steady State}
+
+\begin{matlabcode}
+% calibrate the model and saves the steady state
+param.beta       = 0.98;
+param.gamma      = 0.36;
+param.d_bar      = 0.10;
+param.psi        = 0.001;
+param.alpha_T    = 0.40;
+param.alpha_N    = 0.80;
+param.delta      = 0.05;
+param.g_bar      = 1.0066;
+param.phi        = 1.37;
+param.miu        = 0.44;
+param.sigma      = 2;
+% share paremeter of tradable goods; to be calibrated endogenously
+param.yeta       = 0.5; 
+% solve for the steady state with eta = 0.5, an initial guess
+% x_ss0 provides an initial guess for the steady state
+x0    = [0,0,0.1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+x_ss0 = fsolve(@(x)ss_model(x,param), x0);
+% find the eta
+eeta = fsolve(@(x)calibrate_eta(x,param,x_ss0), param.yeta);
+% update the parameters and the steady state vals
+[~, param, x_ss] = calibrate_eta(eeta, param, x_ss0);
+\end{matlabcode}
+
+We find $\eta =  0.349.$ Passing this $\eta$ into Dynare, the steady state is reported in Dynare as follows:
+
+\begin{matlabcode}
+dynare Ex502.mod
+\end{matlabcode}
+
+\begin{matlaboutput}
+STEADY-STATE RESULTS:
+
+c            0.224174
+h            0.32947
+a            0.295923
+i            0.0717491
+d            0.1
+r            1.02958
+a_T          0.296406
+a_N          0.295665
+y_T          0.298638
+y_N          0.295665
+k_T          0.78296
+k_N          0.484693
+i_T          0.0443155
+i_N          0.0274336
+h_T          0.0698872
+h_N          0.259583
+lambda       3.55303
+z            1
+g            1.0066
+p            2.87583
+p_N          1.87583
+tb           0.00077606
+\end{matlaboutput}
+
+\subsection*{Q5. The Law of Motion}
+
+Dynare also reports the transition function for all variables. The following output has been trimmed. Note that the model is solved without taking logs.
+
+\begin{matlaboutput}
+POLICY AND TRANSITION FUNCTIONS
+                     z              d            k_T             k_N        
+Constant      1.000000       0.100000       0.782960        0.484693        
+z(-1)         0.950000       0.207817       0.193557        0.111752        
+d(-1)                0       1.020164       0.010874        0.000190        
+k_T(-1)              0      -0.390975       0.886212       -0.011684        
+k_N(-1)              0       0.072941       0.130435        0.847934        
+ez            0.005300       0.001159       0.001080        0.000623        
+eg                   0       0.003594      -0.016149       -0.008560        
+\end{matlaboutput}
+
+Thus, for a state vector $[z, d, k^{T}, k^{N}]'$, we have
+\begin{align*}
+h_{x} = \begin{bmatrix}
+   0.95 &      0 &     0 &     0\\
+   0.20 &   1.02 & -0.39 &  0.07\\
+   0.19 &   0.01 &  0.88 &  0.13\\
+   0.11 &   0.00 & -0.01 &  0.84\\
+\end{bmatrix},
+\end{align*}
+and its eigenvalues are 
+\begin{align*}
+\begin{bmatrix}
+    0.8883 + 0.0155i &
+    0.8883 - 0.0155i &
+    0.9776 &
+    0.9500 
+\end{bmatrix},
+\end{align*}
+all of which falls within the unit circle. So the system is stable.
+
+\subsection*{Q6. Statitics}
+
+Since $\Delta Y_{t}$, $\Delta C_{t}$, and $tby_{t}$ are all themselves stationary, Dynare can directly report their moments and correlations by carefully defining them in the mod file:
+
+\begin{matlaboutput}
+THEORETICAL MOMENTS
+VARIABLE     STD. DEV. 
+delta_c        0.0173 
+delta_y        0.0159 
+
+MATRIX OF CORRELATIONS
+Variables     delta_y
+delta_c        0.9581
+delta_y        1.0000
+tby           -0.3035
+\end{matlaboutput}
+
+\subsection*{Q7. Moments}
+
+For moments of other non-stationary variables, Dynare does not report them directly. I follow the procedure describe in the textbook to calculate them.
+
+\begin{matlabcode}
+% retrieve the simulated sequence
+y_tilde = data(strcmp('logY',M_.endo_names),:)
+c_tilde = data(strcmp('logC',M_.endo_names),:)
+i_tilde = data(strcmp('logI',M_.endo_names),:)
+g       = data(strcmp('g'   ,M_.endo_names),:)
+
+% add the trend back
+logX = cumsum(log(g))
+logC = c_tilde(2:end) + logX(1:end-1)
+logY = y_tilde(2:end) + logX(1:end-1)
+logI = i_tilde(2:end) + logX(1:end-1)
+
+% use hpfilter to detrend
+[~,c] = hpfilter(logC,1600)
+[~,y] = hpfilter(logY,1600)
+[~,i] = hpfilter(logI,1600)
+
+burnin=1000;
+c = c((burnin+1):end)
+y = y((burnin+1):end)
+i = i((burnin+1):end)
+tby = tby((burnin+1):end)
+\end{matlabcode}
+
+\begin{matlabcode}
+% report selected moments in table 5.2
+std(y)*100
+std(c)/std(y)
+std(i)/std(y)
+
+corr(y(2:end),y(1:end-1))
+corr(y,c)
+corr(y,i)
+\end{matlabcode}
+
+\begin{matlaboutput}
+2.1253
+1.0677
+2.6207
+0.7535
+0.9519
+0.9625
+\end{matlaboutput}
+
+\subsection*{Q8. One Sector Model}
+
+Let the tradable sector's share parameter $\eta \to 1$. Then the nontradable sector will become negligible, and the model will be same as the one in Section 5.2.
+
+Since direct setting $\eta = 1$ will cause some numerical issues in Dynare, we instead remove all model equations relate to the nontradable sector. This yields the same model equations as the model in Sector 5.2.
+
+Thus, what we do below is essentially replicate the results of Table 5.2.
+
+\begin{table}[hb]
+    \centering
+    \begin{tabular}{rrrr}
+    \hline
+                     & std($\Delta C_{t}$) & std($\Delta Y_{t}$) & corr($\Delta Y_{t}$, $tby_{t}$)  \\ \hline
+    One Sector Model & 1.78                & 1.42                & -0.58       \\ 
+    Two Sector Model & 1.73                & 1.59                & -0.30       \\ 
+    \end{tabular}
+\end{table}
+
+\begin{table}[hb]
+    \centering
+    \begin{tabular}{lrrrr}
+    \hline
+    Statistics            & Data & Origin Model & One Sector & Two Sector  \\ \hline
+    $\sigma(y)$           & 2.40 & 2.13         & 2.16       & 2.12         \\ 
+    $\sigma(c)/\sigma(y)$ & 1.26 & 1.10         & 1.08       & 1.06         \\ 
+    $\sigma(i)/\sigma(y)$ & 4.15 & 3.83         & 3.91       & 2.62         \\ 
+    $\rho(y)$             & 0.83 & 0.82         & 0.82       & 0.75         \\ 
+    $\rho(y,c)$           & 0.82 & 0.91         & 0.92       & 0.95         \\ 
+    $\rho(y,i)$           & 0.91 & 0.80         & 0.78       & 0.96         \\ \hline
+    \end{tabular}
+\end{table}
+
+Comparing the 3rd column and the 4th column, we can see that our procedure generates almost the same results.
+
+\subsection*{Q9. Comments}
+
+The most obvious differences we can find from the above table are
+\begin{itemize}
+  \item $\sigma(i)/\sigma(y)$ is much lower in the two sector model;
+  \item corr($\Delta Y_{t}$, $tby_{t}$) is much higher in the two sector model.
+\end{itemize}
+
+Here is my explanation:
+\begin{itemize}
+  \item When the GDP growth rate is high, the economy usually needs more investment. 
+  \item For an open economy, it will borrow from the international market. This is why corr($\Delta Y_{t}$, $tby_{t}$) is negative.
+  \item The introduction of nontradable sector makes it harder for the economy to pay back its debt, since part of the output is nontradable.
+  \item Thus, the economy has less incentive to borrow from the international market to finance investment.
+  \item This logic leads to the two main differences listed above. 
+\end{itemize}
+
+
+
+
+\clearpage
 
 \section*{Exercise 6.5}
 \subsection*{Q1. The EDEIR Model}
@@ -199,6 +520,11 @@ tb_y      0.5086  0.3484  0.3028  0.2938  0.2945
 ca_y      0.3220  0.0875  0.0130 -0.0067 -0.0096
 Total computing time : 0h00m01s
 \end{matlaboutput}
+
+We can see that the moments reported in Dynare are basically the same as in table 4.4.
+
+Now we turn off the TFP shock and turn on the interest rate shock.
+
 \begin{matlabcode}
 % turn off productivity shock and turn on interest rate shock
 set_param_value('eta', 0);
@@ -235,10 +561,18 @@ h         0.9243  0.7986  0.6670  0.5468  0.4435
 tb_y      0.3330  0.0432 -0.0720 -0.1085 -0.1111
 ca_y      0.3197  0.0368 -0.0752 -0.1102 -0.1120
 \end{matlaboutput}
+
+The impulse response functions are shown as follows:
 \begin{center}
-\includegraphics[width=.75\linewidth]{figure_0.png}
+\includegraphics[width=.95\linewidth]{figure_0.png}
 \end{center}
 
+Intuition for the IRFs
+\begin{itemize}
+  \item A rise in interest rate makes borrowing more costly (note that the steady state debt level is positive), thus the economy consumes less and saves more to pay back the debt. Thus, $c$ drops but $\frac{tb}{y}$ and $\frac{ca}{y}$ increase.
+  \item Investment further drops because of the high interest rate.
+  \item Due to GHH utility, there is no wealth effect in labor supply. Because $i \downarrow \to K \downarrow \to MPL = w \downarrow$, employment $h$ also drops. Meanwhile, $y$ drops.
+\end{itemize}
 
 
 
@@ -246,7 +580,6 @@ ca_y      0.3197  0.0368 -0.0752 -0.1102 -0.1120
 \subsection*{Q2. The IDF Model}
 
 \begin{matlabcode}
-%---------------- IDF --------------------
 % replicate column 1 of table 4.4
 % make sure the results generated by the new model is consistent with the old results
 
@@ -282,6 +615,11 @@ ca_y      0.3022  0.0657 -0.0061 -0.0228 -0.0232
 Total computing time : 0h00m01s
 Note: warning(s) encountered in MATLAB/Octave code
 \end{matlaboutput}
+
+We can see that the moments reported in Dynare are basically the same as in table 4.4.
+
+Now we turn off the TFP shock and turn on the interest rate shock.
+
 \begin{matlabcode}
 
 % turn off productivity shock and turn on interest rate shock
@@ -321,9 +659,43 @@ tb_y      0.3422  0.0515 -0.0666 -0.1056 -0.1099
 ca_y      0.3282  0.0438 -0.0712 -0.1086 -0.1119
 \end{matlaboutput}
 
-
+The impulse response functions are shown as follows:
 \begin{center}
-\includegraphics[width=.75\linewidth]{figure_1.pdf}
+\includegraphics[width=.95\linewidth]{figure_1.pdf}
 \end{center}
+
+These IRFs are very similar to the ones in Q1. The intuitions are the same as in Q1.
+
+\subsection*{Q3. Comparisons}
+
+In terms of IRFs, the two models generate almost exactly the same IRFs. As for statistic moments, we summarize earlier findings in a table below. The results are very similar.
+
+\begin{table}[hb]
+    \centering
+    \begin{tabular}{lrrrr}
+    \hline
+                            & IDF & EDEIR \\ \hline
+    \textbf{Volatilities}\\
+    std$(y)$                & 16.2 & 15.6       \\ 
+    std$(c)$                & 11.6 & 10.9       \\ 
+    std$(i)$                &102.2 & 99.3       \\ 
+    std$(h)$                & 11.2 & 10.7       \\ 
+    std$(\frac{tb}{y})$     & 25.1 & 24.2       \\ 
+    std$(\frac{ca}{y})$     & 24.7 & 23.8       \\ 
+    \textbf{Serial Correlations}\\
+    corr$(y_{t},y_{t-1})$   & 0.93 & 0.92       \\ 
+    corr$(c_{t},c_{t-1})$   & 0.94 & 0.94       \\ 
+    corr$(i_{t},i_{t-1})$   & 0.38 & 0.37       \\ 
+    corr$(h_{t},h_{t-1})$   & 0.93 & 0.92       \\ 
+    corr$(\frac{tb_t}{y_t},\frac{tb_{t-1}}{y_{t-1}})$  & 0.34 & 0.33 \\ 
+    corr$(\frac{ca_t}{y_t},\frac{ca_{t-1}}{y_{t-1}})$  & 0.33 & 0.32 \\ 
+    \textbf{Correlations with Output}\\
+    corr$(c_{t},y_{t})$     & 0.99 & 0.99       \\ 
+    corr$(i_{t},y_{t})$     & 0.07 & 0.06       \\ 
+    corr$(h_{t},y_{t})$     & 1.00 & 1.00       \\ 
+    corr$(\frac{tb_t}{y_t}, y_{t})$  & 0.23 & 0.24       \\ 
+    corr$(\frac{ca_t}{y_t}, y_{t})$  & 0.17 & 0.19       \\ \hline
+    \end{tabular}
+\end{table}
 
 \end{document}

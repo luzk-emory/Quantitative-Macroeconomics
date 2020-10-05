@@ -87,5 +87,5 @@ end;
 
 // ==================== Solve and simulate
 // stoch_simul(graph_format=none, hp_filter=0, irf=0, nodecomposition, nofunctions, order=1);
-stoch_simul(irf=0, nodecomposition, nofunctions, order=1) y c i h tb_y ca_y;
-// stoch_simul(irf=20, order=1);
+// stoch_simul(irf=0, nodecomposition, nofunctions, order=1) y c i h tb_y ca_y;
+stoch_simul(irf=20, order=1);
